@@ -255,7 +255,7 @@
     <string name="Send_the_following_pictures">Send the following pictures?</string>
     <string name="search_new">Search</string>
     <string name="were_mentioned">You were montioned</string>
-    
+
     <string name="Delete_the_contact">Delete the contact</string>
     <string name="Move_into_the_blacklist_new">Move into the blacklist</string>
     <string name="Change_the_group_name">Change group name</string>
@@ -292,7 +292,7 @@
     <string name="toast_nick_not_isnull">nick cannot be empty!</string>
     <string name="dl_update_nick">update nickname</string>
     <string name="dl_update_photo">update photo</string>
-    <string name="dl_waiting">waiting...</string>
+    <string name="dl_waiting">waiting…</string>
     <string name="toast_updatenick_success">update nickname success!</string>
     <string name="toast_updatenick_fail">update nickname fail!</string>
     <string name="toast_updatephoto_success">update photo success!</string>
