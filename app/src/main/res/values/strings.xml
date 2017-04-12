@@ -3,11 +3,15 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">用户名</string>
+    <string name="prompt_nickname">昵称</string>
     <string name="prompt_password">密码</string>
+    <string name="prompt_com_password">确认密码</string>
     <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">用户名不能为空</string>
+    <string name="error_invalid_nickname">昵称不能为空</string>
     <string name="error_invalid_password">密码不能为空</string>
+    <string name="error_invalid_com_password">确认密码不能为空</string>
 
     <string name="pref_default_video_frame_rate">15</string>
     <string name="pref_video_frame_rate">framerate</string>
