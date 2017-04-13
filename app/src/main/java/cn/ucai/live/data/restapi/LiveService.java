@@ -9,7 +9,7 @@ import retrofit2.http.Query;
  * Created by w on 2017/4/13.
  */
 
-public interface LivveService {
+public interface LiveService {
     @GET("live/getAllGifts")
     Call<String> getAllGifts();
 

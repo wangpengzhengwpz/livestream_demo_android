@@ -2,7 +2,10 @@ package cn.ucai.live.data.restapi;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+
+import cn.ucai.live.I;
 import cn.ucai.live.LiveApplication;
+import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;
 import cn.ucai.live.data.restapi.model.ResponseModule;
@@ -11,6 +14,9 @@ import com.hyphenate.chat.EMClient;
 import java.io.IOException;
 import java.util.List;
 
+import cn.ucai.live.utils.L;
+import cn.ucai.live.utils.Result;
+import cn.ucai.live.utils.ResultUtils;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -19,17 +25,21 @@ import okhttp3.RequestBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Created by wei on 2017/2/14.
  */
 
 public class ApiManager {
+    private static final String TAG = "ApiManager";
     private String appkey;
     private ApiService apiService;
+    private LiveService liveService;
 
     private static  ApiManager instance;
 
@@ -58,6 +68,12 @@ public class ApiManager {
 
         apiService = retrofit.create(ApiService.class);
 
+        Retrofit liveRetrofit = new Retrofit.Builder()
+                .baseUrl(I.SERVER_ROOT)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .client(httpClient)
+                .build();
+        liveService = liveRetrofit.create(LiveService.class);
     }
 
 
@@ -83,6 +99,28 @@ public class ApiManager {
         return instance;
     }
 
+    public void getAllGifts() {
+        Call<String> call = liveService.getAllGifts();
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                L.e(TAG, "response=" + response);
+                String s = response.body();
+                Result result = ResultUtils.getListResultFromJson(s, Gift.class);
+                if (result != null && result.isRetMsg()) {
+                    List<Gift> list = (List<Gift>) result.getRetData();
+                    for (Gift gift : list) {
+                        L.e(TAG, "gift=" + gift);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                L.e(TAG, "onFailure=" + t.toString());
+            }
+        });
+    }
 
     public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
         return createLiveRoomWithRequest(name, description, coverUrl, null);
