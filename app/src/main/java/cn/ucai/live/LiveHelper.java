@@ -24,7 +24,7 @@ import cn.ucai.live.utils.PreferenceManager;
 
 public class LiveHelper {
 
-    protected static final String TAG = "SuperWeChatHelper";
+    protected static final String TAG = "DemoHelper";
 
     private EaseUI easeUI;
 

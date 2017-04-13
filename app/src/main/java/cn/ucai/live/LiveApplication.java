@@ -1,15 +1,6 @@
 package cn.ucai.live;
 
 import android.app.Application;
-import android.content.Intent;
-
-import cn.ucai.live.ui.activity.MainActivity;
-import cn.ucai.live.utils.PreferenceManager;
-
-import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.controller.EaseUI;
 import com.ucloud.ulive.UStreamingContext;
 
 /**
