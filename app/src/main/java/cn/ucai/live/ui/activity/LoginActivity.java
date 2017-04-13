@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import cn.ucai.live.R;
+import cn.ucai.live.utils.PreferenceManager;
+
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
@@ -73,7 +75,9 @@ public class LoginActivity extends BaseActivity {
       }
     });
 
-
+    if (PreferenceManager.getInstance().getCurrentUsername() != null) {
+      mEmailView.setText(PreferenceManager.getInstance().getCurrentUsername());
+    }
   }
 
 
@@ -152,14 +156,16 @@ public class LoginActivity extends BaseActivity {
       int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
       mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-      mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+      mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(
+              new AnimatorListenerAdapter() {
         @Override public void onAnimationEnd(Animator animation) {
           mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
       });
 
       mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-      mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+      mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(
+              new AnimatorListenerAdapter() {
         @Override public void onAnimationEnd(Animator animation) {
           mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }

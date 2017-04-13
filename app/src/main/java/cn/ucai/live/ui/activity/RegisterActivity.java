@@ -1,7 +1,6 @@
 package cn.ucai.live.ui.activity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -25,6 +24,7 @@ import cn.ucai.live.utils.CommonUtils;
 import cn.ucai.live.utils.L;
 import cn.ucai.live.utils.MD5;
 import cn.ucai.live.utils.MFGT;
+import cn.ucai.live.utils.PreferenceManager;
 import cn.ucai.live.utils.Result;
 import cn.ucai.live.utils.ResultUtils;
 
@@ -110,6 +110,7 @@ public class RegisterActivity extends BaseActivity {
                         public void run() {
                             pd.dismiss();
                             showToast("注册成功");
+                            PreferenceManager.getInstance().setCurrentUserName(username);
 //                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
 //                            finish();
                             MFGT.gotoLogin(RegisterActivity.this);
@@ -173,7 +174,8 @@ public class RegisterActivity extends BaseActivity {
             mEtComPassword.requestFocus();
             return false;
         } else if (!password.equals(confirm_pwd)) {
-            Toast.makeText(this, getResources().getString(R.string.Two_input_password), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.Two_input_password),
+                    Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
