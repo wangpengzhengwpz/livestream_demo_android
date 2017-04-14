@@ -17,14 +17,18 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.live.ThreadPoolManager;
+import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.ApiManager;
+import cn.ucai.live.data.restapi.LiveException;
 import cn.ucai.live.data.restapi.model.ResponseModule;
 
 import com.bumptech.glide.Glide;
 import cn.ucai.live.R;
 
 import cn.ucai.live.ui.GridMarginDecoration;
+import cn.ucai.live.utils.L;
+
 import com.hyphenate.exceptions.HyphenateException;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +86,49 @@ public class LiveListFragment extends Fragment {
 
 
     private void loadGiftList() {
-        ApiManager.get().getAllGifts();
+//        ThreadPoolManager.getInstance().executeTask(new ThreadPoolManager.Task<Result<List<Gift>>>(){
+//
+//            @Override
+//            public Result<List<Gift>> onRequest() throws HyphenateException {
+//                return (Result<List<Gift>>) ApiManager.get().getAllGifts();
+//            }
+//
+//            @Override
+//            public void onSuccess(Result<List<Gift>> listResult) {
+//                L.e("list","onSuccess,list="+listResult);
+//                if (listResult!=null && listResult.isRetMsg()){
+//                    List<Gift> list = listResult.getRetData();
+//                    if (list!=null) {
+//                        L.e("list", "onSuccess,list=" + list.size());
+//                        for (Gift gift : list) {
+//                            L.e("list","gift="+gift);
+//                        }
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onError(HyphenateException exception) {
+//                L.e("list","onError,exception="+exception.toString());
+//            }
+//        });
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Gift> list = ApiManager.get().getAllGifts();
+                    if (list!=null) {
+                        L.e("list", "onSuccess,list=" + list.size());
+                        for (Gift gift : list) {
+                            L.e("list","gift="+gift);
+                        }
+                    }
+                } catch (LiveException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void showLiveList(final boolean isLoadMore){

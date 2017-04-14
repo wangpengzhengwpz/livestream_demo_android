@@ -14,6 +14,7 @@ import cn.ucai.live.data.model.IUserModel;
 import cn.ucai.live.data.model.OnCompleteListener;
 import cn.ucai.live.data.model.UserModel;
 import cn.ucai.live.data.restapi.ApiManager;
+import cn.ucai.live.data.restapi.LiveException;
 import cn.ucai.live.utils.L;
 import cn.ucai.live.utils.PreferenceManager;
 import cn.ucai.live.utils.Result;
@@ -139,7 +140,12 @@ public class UserProfileManager {
 			@Override
 			public void run() {
 				try {
-					User user = ApiManager.get().loadUserInfo(EMClient.getInstance().getCurrentUser());
+					User user = null;
+					try {
+						user = ApiManager.get().loadUserInfo(EMClient.getInstance().getCurrentUser());
+					} catch (LiveException e) {
+						e.printStackTrace();
+					}
 					if (user != null) {
 						updateCurrentAppUserInfo(user);
 					}

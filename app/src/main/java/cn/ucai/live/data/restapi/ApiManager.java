@@ -16,7 +16,6 @@ import com.hyphenate.easeui.domain.User;
 import java.io.IOException;
 import java.util.List;
 
-import cn.ucai.live.utils.L;
 import cn.ucai.live.utils.Result;
 import cn.ucai.live.utils.ResultUtils;
 import okhttp3.Interceptor;
@@ -27,7 +26,6 @@ import okhttp3.RequestBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -101,39 +99,67 @@ public class ApiManager {
         return instance;
     }
 
-    public void getAllGifts() {
+    public List<Gift> getAllGifts() throws LiveException {
         Call<String> call = liveService.getAllGifts();
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                L.e(TAG, "response=" + response);
-                String s = response.body();
-                Result result = ResultUtils.getListResultFromJson(s, Gift.class);
-                if (result != null && result.isRetMsg()) {
-                    List<Gift> list = (List<Gift>) result.getRetData();
-                    for (Gift gift : list) {
-                        L.e(TAG, "gift=" + gift);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                L.e(TAG, "onFailure=" + t.toString());
-            }
-        });
+        Result<List<Gift>> result = handleResponseCallToResultList(call, Gift.class);
+        if (result != null && result.isRetMsg()) {
+            return result.getRetData();
+        }
+        return null;
+//        call.enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                L.e(TAG, "response=" + response);
+//                String s = response.body();
+//                Result result = ResultUtils.getListResultFromJson(s, Gift.class);
+//                if (result != null && result.isRetMsg()) {
+//                    List<Gift> list = (List<Gift>) result.getRetData();
+//                    for (Gift gift : list) {
+//                        L.e(TAG, "gift=" + gift);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//                L.e(TAG, "onFailure=" + t.toString());
+//            }
+//        });
     }
 
-    public com.hyphenate.easeui.domain.User loadUserInfo(String username) throws IOException {
-        User user = null;
+    public User loadUserInfo(String username) throws IOException, LiveException {
         Call<String> call = liveService.loadUserInfo(username);
-        Response<String> response = call.execute();
-        String body = response.body();
-        Result result = ResultUtils.getResultFromJson(body, User.class);
+        Result<User> result = handleResponseCallToResult(call, User.class);
         if (result != null && result.isRetMsg()) {
-            user = (User) result.getRetData();
+            return result.getRetData();
         }
-        return user;
+        return null;
+    }
+
+    private <T> Result<T>handleResponseCallToResult(Call<String> call, Class<T> clazz) throws LiveException {
+        try {
+            Response<String> response = call.execute();
+            if (!response.isSuccessful()) {
+                throw new LiveException(response.code(), response.errorBody().string());
+            }
+            String body = response.body();
+            return ResultUtils.getResultFromJson(body, clazz);
+        } catch (IOException e) {
+            throw new LiveException(e.getMessage());
+        }
+    }
+
+    private <T> Result<List<T>>handleResponseCallToResultList(Call<String> call, Class<T> clazz) throws LiveException {
+        try {
+            Response<String> response = call.execute();
+            if (!response.isSuccessful()) {
+                throw new LiveException(response.code(), response.errorBody().string());
+            }
+            String body = response.body();
+            return ResultUtils.getListResultFromJson(body, clazz);
+        } catch (IOException e) {
+            throw new LiveException(e.getMessage());
+        }
     }
 
     public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
