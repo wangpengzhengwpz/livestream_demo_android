@@ -137,15 +137,19 @@ public class ApiManager {
         return null;
     }
 
-    public void createLiveRoom(String auth, String name, String description, String owner, int maxusers,
-                               String members) {
+    public String createLiveRoom(String auth, String name, String description, String owner, int maxusers,
+                               String members) throws IOException {
         Call<String> call = liveService.createLiveRoom(auth, name, description, owner, maxusers, members);
+        Response<String> response = call.execute();
+        return ResultUtils.getEMResultFromJson(response.body());
     }
 
-    public void createLiveRoom(String name, String desciption) {
-        createLiveRoom("1IFgE", name, desciption, EMClient.getInstance().getCurrentUser(), 300,
+    public String createLiveRoom(String name, String desciption) throws IOException {
+        return createLiveRoom("1IFgE", name, desciption, EMClient.getInstance().getCurrentUser(), 300,
                 EMClient.getInstance().getCurrentUser());
     }
+
+
 
     private <T> Result<T>handleResponseCallToResult(Call<String> call, Class<T> clazz) throws LiveException {
         try {
@@ -173,39 +177,48 @@ public class ApiManager {
         }
     }
 
-    public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
+    public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException, IOException {
         return createLiveRoomWithRequest(name, description, coverUrl, null);
     }
 
-    public LiveRoom createLiveRoom(String name, String description, String coverUrl, String liveRoomId) throws LiveException {
+    public LiveRoom createLiveRoom(String name, String description, String coverUrl, String liveRoomId) throws LiveException, IOException {
         return createLiveRoomWithRequest(name, description, coverUrl, liveRoomId);
     }
 
-    private LiveRoom createLiveRoomWithRequest(String name, String description, String coverUrl, String liveRoomId) throws LiveException {
+    private LiveRoom createLiveRoomWithRequest(String name, String description, String coverUrl, String liveRoomId) throws LiveException, IOException {
         LiveRoom liveRoom = new LiveRoom();
         liveRoom.setName(name);
         liveRoom.setDescription(description);
         liveRoom.setAnchorId(EMClient.getInstance().getCurrentUser());
         liveRoom.setCover(coverUrl);
 
-        Call<ResponseModule<LiveRoom>> responseCall;
-        if(liveRoomId != null){
-            responseCall = apiService.createLiveShow(liveRoomId, liveRoom);
-
-        }else {
-            responseCall = apiService.createLiveRoom(liveRoom);
-        }
-        ResponseModule<LiveRoom> response = handleResponseCall(responseCall).body();
-        LiveRoom room = response.data;
-        if(room.getId() != null) {
-            liveRoom.setId(room.getId());
-        }else {
+        String id = createLiveRoom(name, description);
+        L.e(TAG, "id=" + id);
+        if (id != null) {
+            liveRoom.setId(id);
+            liveRoom.setChatroomId(id);
+        } else {
             liveRoom.setId(liveRoomId);
         }
-        liveRoom.setChatroomId(room.getChatroomId());
-        //liveRoom.setAudienceNum(1);
-        liveRoom.setLivePullUrl(room.getLivePullUrl());
-        liveRoom.setLivePushUrl(room.getLivePushUrl());
+
+//        Call<ResponseModule<LiveRoom>> responseCall;
+//        if(liveRoomId != null){
+//            responseCall = apiService.createLiveShow(liveRoomId, liveRoom);
+//
+//        }else {
+//            responseCall = apiService.createLiveRoom(liveRoom);
+//        }
+//        ResponseModule<LiveRoom> response = handleResponseCall(responseCall).body();
+//        LiveRoom room = response.data;
+//        if(room.getId() != null) {
+//            liveRoom.setId(room.getId());
+//        }else {
+//            liveRoom.setId(liveRoomId);
+//        }
+//        liveRoom.setChatroomId(room.getChatroomId());
+//        //liveRoom.setAudienceNum(1);
+//        liveRoom.setLivePullUrl(room.getLivePullUrl());
+//        liveRoom.setLivePushUrl(room.getLivePushUrl());
         return liveRoom;
     }
 

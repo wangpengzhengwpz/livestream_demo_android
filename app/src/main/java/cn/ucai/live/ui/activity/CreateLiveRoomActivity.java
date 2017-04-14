@@ -24,6 +24,7 @@ import com.hyphenate.cloud.EMCloudOperationCallback;
 import com.hyphenate.cloud.HttpFileManager;
 import com.hyphenate.exceptions.HyphenateException;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONException;
@@ -86,13 +87,16 @@ public class CreateLiveRoomActivity extends BaseActivity {
         executeTask(new ThreadPoolManager.Task<LiveRoom>() {
             HyphenateException exception;
             String coverUrl;
-            @Override public LiveRoom onRequest() throws HyphenateException {
-                if(coverPath != null){
+
+            @Override
+            public LiveRoom onRequest() throws HyphenateException {
+                if (coverPath != null) {
 
                     Map<String, String> headers = new HashMap<String, String>();
                     headers.put("Authorization", "Bearer " + EMClient.getInstance().getAccessToken());
                     new HttpFileManager().uploadFile(coverPath, "", "", "", headers, new EMCloudOperationCallback() {
-                        @Override public void onSuccess(String result) {
+                        @Override
+                        public void onSuccess(String result) {
                             try {
                                 JSONObject jsonObj = new JSONObject(result);
                                 JSONObject entitys = jsonObj.getJSONArray("entities").getJSONObject(0);
@@ -104,19 +108,26 @@ public class CreateLiveRoomActivity extends BaseActivity {
                             }
                         }
 
-                        @Override public void onError(String msg) {
+                        @Override
+                        public void onError(String msg) {
                             exception = new HyphenateException(msg);
                         }
 
-                        @Override public void onProgress(int progress) {
+                        @Override
+                        public void onProgress(int progress) {
 
                         }
                     });
                 }
-                if(exception != null){
+                if (exception != null) {
                     throw exception;
                 }
-                return ApiManager.get().createLiveRoom(name, desc, coverUrl);
+                try {
+                    return ApiManager.get().createLiveRoom(name, desc, coverUrl);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
             }
 
             @Override public void onSuccess(LiveRoom liveRoom) {
