@@ -11,6 +11,8 @@ import cn.ucai.live.data.restapi.model.LiveStatusModule;
 import cn.ucai.live.data.restapi.model.ResponseModule;
 import cn.ucai.live.data.restapi.model.StatisticsType;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.User;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -120,6 +122,18 @@ public class ApiManager {
                 L.e(TAG, "onFailure=" + t.toString());
             }
         });
+    }
+
+    public com.hyphenate.easeui.domain.User loadUserInfo(String username) throws IOException {
+        User user = null;
+        Call<String> call = liveService.loadUserInfo(username);
+        Response<String> response = call.execute();
+        String body = response.body();
+        Result result = ResultUtils.getResultFromJson(body, User.class);
+        if (result != null && result.isRetMsg()) {
+            user = (User) result.getRetData();
+        }
+        return user;
     }
 
     public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
