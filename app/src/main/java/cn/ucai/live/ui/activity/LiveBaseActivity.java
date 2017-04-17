@@ -396,14 +396,6 @@ public abstract class LiveBaseActivity extends BaseActivity {
                     chatroom = EMClient.getInstance()
                             .chatroomManager()
                             .fetchChatRoomFromServer(chatroomId, true);
-                    L.e(TAG, "showMemberList,chatroom toString=" + chatroom.toString());
-                    L.e(TAG, "showMemberList,chatroom getName=" + chatroom.getName());
-                    L.e(TAG, "showMemberList,chatroom getDescription=" + chatroom.getDescription());
-                    L.e(TAG, "showMemberList,chatroom getId=" + chatroom.getId());
-                    L.e(TAG, "showMemberList,chatroom getOwner=" + chatroom.getOwner());
-                    L.e(TAG, "showMemberList,chatroom getMemberCount=" + chatroom.getMemberCount());
-                    L.e(TAG, "showMemberList,chatroom getMemberList=" + chatroom.getMemberList());
-                    L.e(TAG, "showMemberList,chatroom getAdminList=" + chatroom.getAdminList());
                     memberList.clear();
                     List<String> tempList = new ArrayList<>();
                     tempList.addAll(chatroom.getAdminList());
@@ -538,7 +530,6 @@ public abstract class LiveBaseActivity extends BaseActivity {
 
         public AvatarAdapter(Context context, List<String> namelist) {
             this.namelist = namelist;
-            L.e(TAG, "AvatarAdapter,namelist=" + namelist);
             this.context = context;
             avatarRepository = new TestAvatarRepository();
         }
