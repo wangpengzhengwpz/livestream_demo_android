@@ -148,7 +148,7 @@ public class ApiManager {
 
     public String createLiveRoom(String name, String desciption) throws IOException {
         return createLiveRoom("1IFgE", name, desciption, EMClient.getInstance().getCurrentUser(), 300,
-                EMClient.getInstance().getCurrentUser());
+                EMClient.getInstance().getCurrentUser() + ",fffire,seven009,zhu123456,cccccg,qwer000,gsd123,xsh123");
     }
 
     public void deleteLiveRoom(String chatRoomId) {
