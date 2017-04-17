@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 
 import cn.ucai.live.I;
 import cn.ucai.live.LiveApplication;
+import cn.ucai.live.R;
 import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;
@@ -27,6 +28,7 @@ import okhttp3.RequestBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -149,7 +151,21 @@ public class ApiManager {
                 EMClient.getInstance().getCurrentUser());
     }
 
+    public void deleteLiveRoom(String chatRoomId) {
+        Call<String> call = liveService.deleteLiveRoom("1IFgE", chatRoomId);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                boolean deleteSuccess = ResultUtils.getEMResultWithSuccessFromJson(response.body());
+                L.e(TAG, "deleteLiveRoom,deleteSuccess=" + deleteSuccess);
+            }
 
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                L.e(TAG, "deleteLiveRoom,onFailure=" + t.toString());
+            }
+        });
+    }
 
     private <T> Result<T>handleResponseCallToResult(Call<String> call, Class<T> clazz) throws LiveException {
         try {
