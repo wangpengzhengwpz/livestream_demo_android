@@ -1,5 +1,7 @@
 package cn.ucai.live.data.restapi;
 
+import com.hyphenate.easeui.domain.User;
+
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.model.GrantAdminModule;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;

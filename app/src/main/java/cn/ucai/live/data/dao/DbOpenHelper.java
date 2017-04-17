@@ -25,26 +25,21 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     private DbOpenHelper(Context context) {
         super(context, getUserDatabaseName(), null, DATABASE_VERSION);
-        L.e(TAG,"DbOpenHelper......");
     }
 
     public static DbOpenHelper getInstance(Context context) {
-        L.e(TAG,"getInstance......");
         if (instance == null) {
-            L.e(TAG,"getInstance......new DbOpenHelper");
             instance = new DbOpenHelper(context.getApplicationContext());
         }
         return instance;
     }
 
     private static String getUserDatabaseName() {
-        L.e(TAG,"getUserDatabaseName......");
         return LiveApplication.getInstance().getPackageName() + "_demo.db";
     }
     
     @Override
     public void onCreate(SQLiteDatabase db) {
-        L.e(TAG,"onCreate......");
         db.execSQL(GIFT_TABLE_CREATE);
     }
 

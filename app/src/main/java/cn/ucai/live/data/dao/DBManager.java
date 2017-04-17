@@ -22,14 +22,11 @@ public class DBManager {
     private DbOpenHelper dbHelper;
 
     private DBManager() {
-        L.e(TAG,"DBManager......");
         dbHelper = DbOpenHelper.getInstance(LiveApplication.getInstance());
     }
 
     public static synchronized DBManager getInstance(){
-        L.e(TAG,"DBManager......getInstance......");
         if(dbMgr == null){
-            L.e(TAG,"DBManager......getInstance......new DBManager()");
             dbMgr = new DBManager();
         }
         return dbMgr;
@@ -41,7 +38,6 @@ public class DBManager {
      * @param giftList
      */
     synchronized public void saveAppGiftList(List<Gift> giftList) {
-        L.e(TAG,"saveAppGiftList......");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         if (db.isOpen()) {
             db.delete(GiftDao.GIFT_TABLE_NAME, null, null);
@@ -66,7 +62,6 @@ public class DBManager {
      * @return
      */
     synchronized public Map<Integer, Gift> getAppGiftList() {
-        L.e(TAG,"getAppGiftList......");
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Map<Integer, Gift> gifts = new Hashtable<Integer, Gift>();
         if (db.isOpen()) {
