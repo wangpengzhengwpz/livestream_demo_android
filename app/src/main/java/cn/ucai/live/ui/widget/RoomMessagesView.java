@@ -16,16 +16,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.ucai.live.I;
 import cn.ucai.live.R;
+import cn.ucai.live.utils.L;
+
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.exceptions.HyphenateException;
 
 /**
  * Created by wei on 2016/6/3.
  */
 public class RoomMessagesView extends RelativeLayout{
+    private static final String TAG = "RoomMessagesView";
     private EMConversation conversation;
     ListAdapter adapter;
 
@@ -164,7 +169,18 @@ public class RoomMessagesView extends RelativeLayout{
         public void onBindViewHolder(MyViewHolder holder, int position) {
             final EMMessage message = messages[position];
             if(message.getBody() instanceof EMTextMessageBody) {
-                holder.name.setText(message.getFrom());
+                String nick = null;
+                try {
+                    nick = message.getStringAttribute(I.User.NICK);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+                L.e(TAG, "RoomMessagesView,onBindViewHolder,nick=" + nick);
+                if (nick == null) {
+                    nick = message.getFrom();
+                }
+                L.e(TAG, "RoomMessagesView,onBindViewHolder,nick=" + nick);
+                holder.name.setText(nick);
                 holder.content.setText(((EMTextMessageBody) message.getBody()).getMessage());
                 if (EMClient.getInstance().getCurrentUser().equals(message.getFrom())) {
                     holder.content.setTextColor(getResources().getColor(R.color.color_room_my_msg));
