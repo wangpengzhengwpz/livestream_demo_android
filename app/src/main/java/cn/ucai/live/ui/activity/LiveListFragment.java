@@ -25,7 +25,6 @@ import com.bumptech.glide.Glide;
 import cn.ucai.live.R;
 
 import cn.ucai.live.ui.GridMarginDecoration;
-import cn.ucai.live.utils.L;
 
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
@@ -38,7 +37,6 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class LiveListFragment extends Fragment {
-    private static final String TAG = "LiveListFragment";
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private ProgressBar loadmorePB;
@@ -147,11 +145,8 @@ public class LiveListFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            L.e(TAG, "getChatRoom,chatRooms=" + chatRooms);
                             if (chatRooms != null && chatRooms.size() > 0) {
-                                L.e(TAG, "getChatRoom,size=" + chatRooms.size());
                                 for (EMChatRoom room : chatRooms) {
-                                    L.e(TAG, "room=" + room.getName() + ",desc=" + room.getDescription());
                                     LiveRoom liveRoom = chatRoom3liveRoom(room);
                                     if (liveRoom != null) {
                                         liveRoomList.add(liveRoom);
@@ -181,13 +176,11 @@ public class LiveListFragment extends Fragment {
             liveRoom.setId(room.getOwner());
             liveRoom.setAnchorId(room.getId());
             liveRoom.setDescription(room.getDescription());
-            L.e(TAG, "room.getName()=" + room.getName());
             String s = "#live201612#";
             if (room.getName().indexOf(s) > 0) {
                 int index = room.getName().indexOf(s);
                 String name = room.getName().substring(0, index);
                 String cover = room.getName().substring(index + s.length());
-                L.e(TAG, "name=" + name + ",cover=" + cover);
                 liveRoom.setName(name);
                 liveRoom.setCover("https://a1.easemob.com/i/superwechat201612/chatfiles/" + cover);
             } else {
