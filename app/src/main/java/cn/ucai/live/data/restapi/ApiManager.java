@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 
 import cn.ucai.live.I;
 import cn.ucai.live.LiveApplication;
-import cn.ucai.live.R;
 import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;
@@ -48,7 +47,8 @@ public class ApiManager {
 
     private ApiManager(){
         try {
-            ApplicationInfo appInfo = LiveApplication.getInstance().getPackageManager().getApplicationInfo(
+            ApplicationInfo appInfo = LiveApplication.getInstance().getPackageManager().
+                    getApplicationInfo(
                     LiveApplication.getInstance().getPackageName(), PackageManager.GET_META_DATA);
             appkey = appInfo.metaData.getString("EASEMOB_APPKEY");
             appkey = appkey.replace("#","/");
@@ -139,16 +139,18 @@ public class ApiManager {
         return null;
     }
 
-    public String createLiveRoom(String auth, String name, String description, String owner, int maxusers,
-                               String members) throws IOException {
-        Call<String> call = liveService.createLiveRoom(auth, name, description, owner, maxusers, members);
+    public String createLiveRoom(String auth, String name, String description, String owner,
+                                 int maxusers, String members) throws IOException {
+        Call<String> call = liveService.createLiveRoom(auth, name, description, owner, maxusers,
+                members);
         Response<String> response = call.execute();
         return ResultUtils.getEMResultFromJson(response.body());
     }
 
     public String createLiveRoom(String name, String desciption) throws IOException {
-        return createLiveRoom("1IFgE", name, desciption, EMClient.getInstance().getCurrentUser(), 300,
-                EMClient.getInstance().getCurrentUser() + ",fffire,seven009,zhu123456,cccccg,qwer000,gsd123,xsh123");
+        return createLiveRoom("1IFgE", name, desciption, EMClient.getInstance().getCurrentUser(),
+                300, EMClient.getInstance().getCurrentUser() +
+                        ",fffire,seven009,zhu123456,cccccg,qwer000,gsd123,xsh123");
     }
 
     public void deleteLiveRoom(String chatRoomId) {
@@ -167,7 +169,8 @@ public class ApiManager {
         });
     }
 
-    private <T> Result<T>handleResponseCallToResult(Call<String> call, Class<T> clazz) throws LiveException {
+    private <T> Result<T>handleResponseCallToResult(Call<String> call, Class<T> clazz) throws
+            LiveException {
         try {
             Response<String> response = call.execute();
             if (!response.isSuccessful()) {
@@ -180,7 +183,8 @@ public class ApiManager {
         }
     }
 
-    private <T> Result<List<T>>handleResponseCallToResultList(Call<String> call, Class<T> clazz) throws LiveException {
+    private <T> Result<List<T>>handleResponseCallToResultList(Call<String> call, Class<T> clazz)
+            throws LiveException {
         try {
             Response<String> response = call.execute();
             if (!response.isSuccessful()) {
@@ -193,22 +197,27 @@ public class ApiManager {
         }
     }
 
-    public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException, IOException {
+    public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws
+            LiveException, IOException {
         return createLiveRoomWithRequest(name, description, coverUrl, null);
     }
 
-    public LiveRoom createLiveRoom(String name, String description, String coverUrl, String liveRoomId) throws LiveException, IOException {
+    public LiveRoom createLiveRoom(String name, String description, String coverUrl, String
+            liveRoomId) throws LiveException, IOException {
         return createLiveRoomWithRequest(name, description, coverUrl, liveRoomId);
     }
 
-    private LiveRoom createLiveRoomWithRequest(String name, String description, String coverUrl, String liveRoomId) throws LiveException, IOException {
+    private LiveRoom createLiveRoomWithRequest(String name, String description, String coverUrl,
+                                               String liveRoomId) throws LiveException, IOException {
         LiveRoom liveRoom = new LiveRoom();
         liveRoom.setName(name);
         liveRoom.setDescription(description);
         liveRoom.setAnchorId(EMClient.getInstance().getCurrentUser());
         liveRoom.setCover(coverUrl);
-
-        String id = createLiveRoom(name, description);
+        L.e(TAG, "createLiveRoomWithRequest,coverUrl=" + coverUrl);
+        String cover = coverUrl.substring(coverUrl.lastIndexOf("/") + 1);
+        String nameCover = name + "#live201612#" + cover;
+        String id = createLiveRoom(nameCover, description);
         L.e(TAG, "id=" + id);
         if (id != null) {
             liveRoom.setId(id);
@@ -247,7 +256,8 @@ public class ApiManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Call<ResponseModule> responseCall = apiService.updateLiveRoom(roomId, jsonToRequestBody(jobj.toString()));
+        Call<ResponseModule> responseCall = apiService.updateLiveRoom(roomId, jsonToRequestBody
+                (jobj.toString()));
         handleResponseCall(responseCall);
     }
 
@@ -289,13 +299,15 @@ public class ApiManager {
     //}
 
     public List<LiveRoom> getLiveRoomList(int pageNum, int pageSize) throws LiveException {
-        Call<ResponseModule<List<LiveRoom>>> respCall = apiService.getLiveRoomList(pageNum, pageSize);
+        Call<ResponseModule<List<LiveRoom>>> respCall = apiService.getLiveRoomList(pageNum,
+                pageSize);
 
         ResponseModule<List<LiveRoom>> response = handleResponseCall(respCall).body();
         return response.data;
     }
 
-    public ResponseModule<List<LiveRoom>> getLivingRoomList(int limit, String cursor) throws LiveException {
+    public ResponseModule<List<LiveRoom>> getLivingRoomList(int limit, String cursor) throws
+            LiveException {
         Call<ResponseModule<List<LiveRoom>>> respCall = apiService.getLivingRoomList(limit, cursor);
 
         ResponseModule<List<LiveRoom>> response = handleResponseCall(respCall).body();
@@ -308,7 +320,8 @@ public class ApiManager {
     }
 
     public List<String> getAssociatedRooms(String userId) throws LiveException {
-        ResponseModule<List<String>> response = handleResponseCall(apiService.getAssociatedRoom(userId)).body();
+        ResponseModule<List<String>> response = handleResponseCall(apiService.getAssociatedRoom
+                (userId)).body();
         return response.data;
     }
 
@@ -345,7 +358,8 @@ public class ApiManager {
         handleResponseCall(apiService.postStatistics(roomId, jsonToRequestBody(jobj.toString())));
     }
 
-    public void postStatistics(StatisticsType type, String roomId, String username) throws LiveException {
+    public void postStatistics(StatisticsType type, String roomId, String username) throws
+            LiveException {
         JSONObject jobj = new JSONObject();
         try {
             jobj.put("type", type);

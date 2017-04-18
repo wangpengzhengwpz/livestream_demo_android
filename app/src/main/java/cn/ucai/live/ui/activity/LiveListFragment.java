@@ -151,7 +151,7 @@ public class LiveListFragment extends Fragment {
                             if (chatRooms != null && chatRooms.size() > 0) {
                                 L.e(TAG, "getChatRoom,size=" + chatRooms.size());
                                 for (EMChatRoom room : chatRooms) {
-                                    L.e(TAG, "room=" + room.getName());
+                                    L.e(TAG, "room=" + room.getName() + ",desc=" + room.getDescription());
                                     LiveRoom liveRoom = chatRoom3liveRoom(room);
                                     if (liveRoom != null) {
                                         liveRoomList.add(liveRoom);
@@ -180,8 +180,19 @@ public class LiveListFragment extends Fragment {
             liveRoom = new LiveRoom();
             liveRoom.setId(room.getOwner());
             liveRoom.setAnchorId(room.getId());
-            liveRoom.setName(room.getName());
             liveRoom.setDescription(room.getDescription());
+            L.e(TAG, "room.getName()=" + room.getName());
+            String s = "#live201612#";
+            if (room.getName().indexOf(s) > 0) {
+                int index = room.getName().indexOf(s);
+                String name = room.getName().substring(0, index);
+                String cover = room.getName().substring(index + s.length());
+                L.e(TAG, "name=" + name + ",cover=" + cover);
+                liveRoom.setName(name);
+                liveRoom.setCover("https://a1.easemob.com/i/superwechat201612/chatfiles/" + cover);
+            } else {
+                liveRoom.setName(room.getName());
+            }
             liveRoom.setAnchorId(room.getOwner());
             liveRoom.setAudienceNum(room.getMemberCount());
         }
