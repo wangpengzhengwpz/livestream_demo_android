@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ucai.live.LiveConstants;
 import cn.ucai.live.ThreadPoolManager;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.ApiManager;
@@ -145,6 +146,7 @@ public class LiveListFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            swipeRefreshLayout.setRefreshing(false);
                             if (chatRooms != null && chatRooms.size() > 0) {
                                 for (EMChatRoom room : chatRooms) {
                                     LiveRoom liveRoom = chatRoom3liveRoom(room);
@@ -176,13 +178,12 @@ public class LiveListFragment extends Fragment {
             liveRoom.setId(room.getOwner());
             liveRoom.setAnchorId(room.getId());
             liveRoom.setDescription(room.getDescription());
-            String s = "#live201612#";
-            if (room.getName().indexOf(s) > 0) {
-                int index = room.getName().indexOf(s);
+            if (room.getName().indexOf(LiveConstants.LIVE_COVER) > 0) {
+                int index = room.getName().indexOf(LiveConstants.LIVE_COVER);
                 String name = room.getName().substring(0, index);
-                String cover = room.getName().substring(index + s.length());
+                String cover = room.getName().substring(index + LiveConstants.LIVE_COVER.length());
                 liveRoom.setName(name);
-                liveRoom.setCover("https://a1.easemob.com/i/superwechat201612/chatfiles/" + cover);
+                liveRoom.setCover(LiveConstants.LIVE_COVER_PREFIX + cover);
             } else {
                 liveRoom.setName(room.getName());
             }

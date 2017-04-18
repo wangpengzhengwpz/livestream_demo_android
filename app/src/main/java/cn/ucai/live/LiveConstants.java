@@ -11,6 +11,8 @@ public class LiveConstants extends EaseConstant {
     public static final String EXTRA_IS_BARRAGE_MSG = "is_barrage_msg";
     public static final String CMD_PRAISE = "cmd_live_praise";
     public static final String EXTRA_PRAISE_COUNT = "live_praise_count";
+    public static final String LIVE_COVER_PREFIX = "https://a1.easemob.com/i/superwechat201612/chatfiles/";
+    public static final String LIVE_COVER = "#live201612#";
 
     public static final String NEW_FRIENDS_USERNAME = "item_new_friends";
     public static final String GROUP_USERNAME = "item_groups";
