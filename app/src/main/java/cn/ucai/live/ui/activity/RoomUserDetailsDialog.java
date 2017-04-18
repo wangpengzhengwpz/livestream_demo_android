@@ -30,7 +30,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.live.R;
 import cn.ucai.live.data.model.LiveRoom;
-import cn.ucai.live.utils.L;
 import cn.ucai.live.utils.Utils;
 
 /**
@@ -82,12 +81,6 @@ public class RoomUserDetailsDialog extends DialogFragment {
 
             EMChatRoom chatRoom = EMClient.getInstance().chatroomManager().getChatRoom(chatroomId);
             List<String> adminList = chatRoom.getAdminList();
-            L.e(TAG, "adminList=" + adminList);
-            L.e(TAG,"1="+!adminList.contains(EMClient.getInstance().getCurrentUser()));
-            L.e(TAG,"2="+username.equals(EMClient.getInstance().getCurrentUser()));
-            L.e(TAG,"3="+username.equals(chatRoom.getOwner()));
-            L.e(TAG,"4="+adminList.contains(username));
-            L.e(TAG,"5="+!EMClient.getInstance().getCurrentUser().equals(chatRoom.getOwner()));
 
             if (!EMClient.getInstance().getCurrentUser().equals(chatRoom.getOwner())) {
                 setAdminButton.setVisibility(View.INVISIBLE);
