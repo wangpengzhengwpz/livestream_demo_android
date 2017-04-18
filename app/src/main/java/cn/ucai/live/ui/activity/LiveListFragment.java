@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ucai.live.LiveConstants;
 import cn.ucai.live.ThreadPoolManager;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.ApiManager;

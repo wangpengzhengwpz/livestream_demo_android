@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 
 import cn.ucai.live.I;
 import cn.ucai.live.LiveApplication;
-import cn.ucai.live.R;
 import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;
@@ -207,7 +206,6 @@ public class ApiManager {
         liveRoom.setDescription(description);
         liveRoom.setAnchorId(EMClient.getInstance().getCurrentUser());
         liveRoom.setCover(coverUrl);
-
         String id = createLiveRoom(name, description);
         L.e(TAG, "id=" + id);
         if (id != null) {
