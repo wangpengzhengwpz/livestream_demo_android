@@ -147,6 +147,7 @@ public class LiveListFragment extends Fragment {
                         @Override
                         public void run() {
                             swipeRefreshLayout.setRefreshing(false);
+                            liveRoomList.clear();
                             if (chatRooms != null && chatRooms.size() > 0) {
                                 for (EMChatRoom room : chatRooms) {
                                     LiveRoom liveRoom = chatRoom3liveRoom(room);
