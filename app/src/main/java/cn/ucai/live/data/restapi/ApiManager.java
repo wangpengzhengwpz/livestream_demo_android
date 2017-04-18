@@ -223,8 +223,8 @@ public class ApiManager {
         if (id != null) {
             liveRoom.setId(id);
             liveRoom.setChatroomId(id);
-            liveRoom.setLivePullUrl(AVOption.playUrl);
-            liveRoom.setLivePushUrl(AVOption.pushUrl);
+            liveRoom.setLivePullUrl(liveRoom.getLivePullUrl());
+            liveRoom.setLivePushUrl(liveRoom.getLivePushUrl());
         } else {
             liveRoom.setId(liveRoomId);
         }
