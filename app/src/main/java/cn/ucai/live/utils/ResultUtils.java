@@ -114,7 +114,7 @@ public class ResultUtils {
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
             if (!jsonObject.isNull("data")) {
-                JSONObject data = jsonObject.getJSONObject("dada");
+                JSONObject data = jsonObject.getJSONObject("data");
                 if (!data.isNull("id")) {
                     return data.getString("id");
                 }
