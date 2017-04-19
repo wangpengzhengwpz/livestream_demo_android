@@ -98,17 +98,10 @@ public class GiftListDialog extends DialogFragment {
         unbinder.unbind();
     }
 
-    private RoomManageEventListener eventListener;
+    private View.OnClickListener eventListener;
 
-    public void setManageEventListener(RoomManageEventListener eventListener) {
+    public void setGiftEventListener(View.OnClickListener eventListener) {
         this.eventListener = eventListener;
-    }
-
-    public interface RoomManageEventListener {
-        void onKickMember(String username);
-
-        void onAddBlacklist(String username);
-
     }
 
     class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder> {
@@ -155,6 +148,8 @@ public class GiftListDialog extends DialogFragment {
                 EaseUserUtils.setAvatar(mContext,gift.getGurl(),mIvGiftThumb);
                 mTvGiftName.setText(gift.getGname());
                 mTvGiftPrice.setText(String.valueOf(gift.getGprice()));
+                itemView.setTag(gift.getId());
+                itemView.setOnClickListener(eventListener);
             }
         }
     }
