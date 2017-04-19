@@ -206,33 +206,33 @@ public class ApiManager {
         liveRoom.setDescription(description);
         liveRoom.setAnchorId(EMClient.getInstance().getCurrentUser());
         liveRoom.setCover(coverUrl);
-        String id = createLiveRoom(name, description);
-        L.e(TAG, "id=" + id);
-        if (id != null) {
-            liveRoom.setId(id);
-            liveRoom.setChatroomId(id);
-        } else {
-            liveRoom.setId(liveRoomId);
-        }
-
-//        Call<ResponseModule<LiveRoom>> responseCall;
-//        if(liveRoomId != null){
-//            responseCall = apiService.createLiveShow(liveRoomId, liveRoom);
-//
-//        }else {
-//            responseCall = apiService.createLiveRoom(liveRoom);
-//        }
-//        ResponseModule<LiveRoom> response = handleResponseCall(responseCall).body();
-//        LiveRoom room = response.data;
-//        if(room.getId() != null) {
-//            liveRoom.setId(room.getId());
-//        }else {
+//        String id = createLiveRoom(name, description);
+//        L.e(TAG, "id=" + id);
+//        if (id != null) {
+//            liveRoom.setId(id);
+//            liveRoom.setChatroomId(id);
+//        } else {
 //            liveRoom.setId(liveRoomId);
 //        }
-//        liveRoom.setChatroomId(room.getChatroomId());
-//        //liveRoom.setAudienceNum(1);
-//        liveRoom.setLivePullUrl(room.getLivePullUrl());
-//        liveRoom.setLivePushUrl(room.getLivePushUrl());
+
+        Call<ResponseModule<LiveRoom>> responseCall;
+        if(liveRoomId != null){
+            responseCall = apiService.createLiveShow(liveRoomId, liveRoom);
+
+        }else {
+            responseCall = apiService.createLiveRoom(liveRoom);
+        }
+        ResponseModule<LiveRoom> response = handleResponseCall(responseCall).body();
+        LiveRoom room = response.data;
+        if(room.getId() != null) {
+            liveRoom.setId(room.getId());
+        }else {
+            liveRoom.setId(liveRoomId);
+        }
+        liveRoom.setChatroomId(room.getChatroomId());
+        //liveRoom.setAudienceNum(1);
+        liveRoom.setLivePullUrl(room.getLivePullUrl());
+        liveRoom.setLivePushUrl(room.getLivePushUrl());
         return liveRoom;
     }
 
