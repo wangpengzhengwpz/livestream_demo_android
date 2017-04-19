@@ -25,6 +25,7 @@
         />
 
     <RelativeLayout
+        android:id="@+id/like_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
@@ -46,4 +47,12 @@
             />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/gift_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/live_button_present_selector"
+        android:layout_toLeftOf="@id/like_camera"
+        android:layout_marginRight="12dp"
+        />
 </RelativeLayout>
